@@ -1,13 +1,40 @@
 pageLoader();
 
 function pageLoader(){
-    console.log('Loading The Page with Functionality...')
-    const colorButtons = document.getElementsByClassName('light-dark-button');
-    for (let btn of colorButtons){
-        btn.addEventListener('click', changeBackgroundColor);
-    };
+    const navLinks = document.getElementsByClassName('navbar-link')
+    for (let link of navLinks){
+        link.addEventListener('click',changeDiv)
+    }
+    const findCountriesForm = document.querySelector('#form');
+    findCountriesForm.addEventListener('submit',e=>findCountry(e));
 
-    const findCountryForm = document.querySelector('#f');
-    findCountryForm.addEventListener('submit', e => findCountries(e, 1));
+}
+function findCountry(event){
+    event.preventDefault();
+    const country = event.target.elements[0].value;
+    const url = `https://restcountries.com/v3.1/name/${country}`;
+    const result = fetch(url)
+    .then(response=>response.json())
+    .then(data => displayCountry(data))
+    .catch(err => console.error(err))
+}
 
+function displayCountry(data){
+    console.log(data)
+    const capital= data[0].capital[0]
+
+
+    const container = document.createElement('div')
+    const heading = document.createElement('h2')
+    heading.innerText = capital
+    container.appendChild(heading)
+    const home = document.querySelector('#home')
+    home.appendChild(container)
+
+    const coa = document.createElement('img')
+    coa.src = data[0].coatOfArms.png
+    container.appendChild(coa)
+
+
+    
 }
